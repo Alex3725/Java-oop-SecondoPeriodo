@@ -1,7 +1,5 @@
 import java.util.ArrayDeque;
 import java.util.Queue;
-import java.util.Stack;
-import java.util.concurrent.CountDownLatch;
 
 public class Coda {
     private int tempoEsecuzione;
@@ -23,11 +21,30 @@ public class Coda {
         this.coda = new ArrayDeque<>();
     }
 
-    public void completaTicket(){
-        System.out.println(coda.poll());
+    public Ticket completaTicket(){
+        return coda.poll();
+    }
+    public int getSize(){
+        return coda.size();
+    }
+
+    public Priority getPriorita() {
+        return priorita;
+    }
+    public boolean isEmpty(){
+        return coda.isEmpty();
     }
 
     private int CalcoloTempoEsecuzione(){
         return priorita.getValore() * coda.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Coda{" +
+                "tempoEsecuzione=" + tempoEsecuzione +
+                ", priorita=" + priorita +
+                ", coda=" + coda +
+                '}';
     }
 }

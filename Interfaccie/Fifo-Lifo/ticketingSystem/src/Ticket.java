@@ -1,8 +1,10 @@
 public class Ticket {
+    private String contenuto;
     private Priority priority;
 
-    public Ticket(Priority priority) {
+    public Ticket(Priority priority,String contenuto) {
         this.priority = priority;
+        this.contenuto = contenuto;
     }
 
     public Priority getPriority() {
@@ -16,7 +18,8 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket{" +
-                "priority=" + priority +
+                "contenuto='" + contenuto + '\'' +
+                ", priority=" + priority +
                 '}';
     }
 }
