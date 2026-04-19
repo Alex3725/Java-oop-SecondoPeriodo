@@ -1,0 +1,4 @@
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="main.java.com.alessandroprevitali.chess.ui.controller.GameController">
+</BorderPane>

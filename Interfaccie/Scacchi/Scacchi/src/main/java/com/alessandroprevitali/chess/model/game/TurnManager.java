@@ -1,0 +1,14 @@
+package main.java.com.alessandroprevitali.chess.model.game;
+
+public class TurnManager {
+
+    private boolean whiteTurn = true;
+
+    public boolean isWhiteTurn() {
+        return whiteTurn;
+    }
+
+    public void switchTurn() {
+        whiteTurn = !whiteTurn;
+    }
+}
