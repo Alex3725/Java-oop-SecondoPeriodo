@@ -15,28 +15,17 @@ import main.java.com.alessandroprevitali.chess.model.rules.CheckDetector;
 import java.util.List;
 
 public class GameService {
-
     private Game game;
     private MoveService moveService;
 
-    public GameService() {
-        this.game = new Game();
-        this.moveService = new MoveService();
-    }
+    public GameService() { this.game = new Game(); this.moveService = new MoveService(); }
 
-    public Game getGame() {
-        return game;
-    }
+    public Game getGame() { return game; }
 
     public boolean handleMove(Move move) {
-        if (game.getState() == GameState.CHECKMATE || game.getState() == GameState.STALEMATE) {
+        if (game.getState() == GameState.CHECKMATE || game.getState() == GameState.STALEMATE)
             return false;
-        }
-
-        if (!moveService.isValid(move, game)) {
-            return false;
-        }
-
+        if (!moveService.isValid(move, game)) return false;
         applyMove(move);
         game.getTurnManager().switchTurn();
         updateGameState();
@@ -46,14 +35,12 @@ public class GameService {
     private void applyMove(Move move) {
         Board board = game.getBoard();
         Tile from = board.getTile(move.getFrom().getRow(), move.getFrom().getCol());
-        Tile to = board.getTile(move.getTo().getRow(), move.getTo().getCol());
+        Tile to   = board.getTile(move.getTo().getRow(),   move.getTo().getCol());
         Piece piece = from.getPiece();
 
         // Arrocco
-        boolean isCastleKingside = piece.getType() == PieceType.KING
-            && move.getTo().getCol() - move.getFrom().getCol() == 2;
-        boolean isCastleQueenside = piece.getType() == PieceType.KING
-            && move.getFrom().getCol() - move.getTo().getCol() == 2;
+        boolean isCastleKingside  = piece.getType()==PieceType.KING && move.getTo().getCol()-move.getFrom().getCol()==2;
+        boolean isCastleQueenside = piece.getType()==PieceType.KING && move.getFrom().getCol()-move.getTo().getCol()==2;
 
         from.setPiece(null);
         to.setPiece(piece);
@@ -62,28 +49,16 @@ public class GameService {
 
         if (isCastleKingside) {
             Tile rFrom = board.getTile(move.getFrom().getRow(), 7);
-            Tile rTo = board.getTile(move.getFrom().getRow(), 5);
+            Tile rTo   = board.getTile(move.getFrom().getRow(), 5);
             Piece rook = rFrom.getPiece();
-
-            rFrom.setPiece(null);
-            rTo.setPiece(rook);
-
-            if (rook != null) {
-                rook.setPosition(new Position(move.getFrom().getRow(), 5));
-                rook.setHasMoved(true);
-            }
+            rFrom.setPiece(null); rTo.setPiece(rook);
+            if (rook!=null) { rook.setPosition(new Position(move.getFrom().getRow(),5)); rook.setHasMoved(true); }
         } else if (isCastleQueenside) {
             Tile rFrom = board.getTile(move.getFrom().getRow(), 0);
-            Tile rTo = board.getTile(move.getFrom().getRow(), 3);
+            Tile rTo   = board.getTile(move.getFrom().getRow(), 3);
             Piece rook = rFrom.getPiece();
-
-            rFrom.setPiece(null);
-            rTo.setPiece(rook);
-
-            if (rook != null) {
-                rook.setPosition(new Position(move.getFrom().getRow(), 3));
-                rook.setHasMoved(true);
-            }
+            rFrom.setPiece(null); rTo.setPiece(rook);
+            if (rook!=null) { rook.setPosition(new Position(move.getFrom().getRow(),3)); rook.setHasMoved(true); }
         }
 
         // Promozione pedone → Regina automatica
@@ -111,9 +86,7 @@ public class GameService {
         return moveService.getLegalMoves(piece, game.getBoard());
     }
 
-    public void reset() {
-        game.reset();
-    }
+    public void reset() { game.reset(); }
 
     public boolean isGameOver() {
         GameState s = game.getState();

@@ -1,16 +1,25 @@
 package main.java.com.alessandroprevitali.chess.model.board;
 
+import main.java.com.alessandroprevitali.chess.model.piece.Piece;
+
 public class Tile {
 
     private Position position;
-    private Object piece; // lo sostituirai tu
+    private Piece piece;
 
     public Tile(Position position) {
         this.position = position;
     }
 
-    public Object getPiece() { return piece; }
-    public void setPiece(Object piece) { this.piece = piece; }
+    public Piece getPiece() {
+        return piece;
+    }
 
-    public Position getPosition() { return position; }
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
 }

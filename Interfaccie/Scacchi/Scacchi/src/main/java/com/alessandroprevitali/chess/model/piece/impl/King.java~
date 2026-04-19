@@ -1,0 +1,54 @@
+package main.java.com.alessandroprevitali.chess.model.piece.impl;
+import main.java.com.alessandroprevitali.chess.model.board.Board;
+import main.java.com.alessandroprevitali.chess.model.board.Position;
+import main.java.com.alessandroprevitali.chess.model.move.Move;
+import main.java.com.alessandroprevitali.chess.model.piece.Color;
+import main.java.com.alessandroprevitali.chess.model.piece.Piece;
+import main.java.com.alessandroprevitali.chess.model.piece.PieceType;
+import java.util.ArrayList;
+import java.util.List;
+public class King extends Piece {
+    public King(Color color, Position position) { super(color, position); }
+    @Override public PieceType getType() { return PieceType.KING; }
+    @Override public List<Move> getPseudoLegalMoves(Board board) {
+        // Il re si muove di una sola casella in una qualunque delle 8 direzioni.
+        List<Move> moves = new ArrayList<>();
+
+        // Celle adiacenti: diagonali, orizzontali e verticali.
+        int[][] dirs = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+        for (int[] d : dirs) {
+            int r = position.getRow()+d[0], c = position.getCol()+d[1];
+            if (r>=0&&r<8&&c>=0&&c<8) {
+                Piece t = board.getTile(r,c).getPiece();
+                // Il re puo andare su casella vuota o catturare un avversario.
+                // Non puo occupare una casella con pezzo alleato.
+                if (t==null||t.getColor()!=color) moves.add(new Move(position, new Position(r,c)));
+            }
+        }
+
+        // Arrocco
+        if (!hasMoved) {
+            // Kingside
+            Piece kr = board.getTile(position.getRow(), 7).getPiece();
+            if (kr!=null&&kr.getType()==PieceType.ROOK&&kr.getColor()==color&&!kr.hasMoved()&&
+                board.getTile(position.getRow(),5).getPiece()==null&&
+                board.getTile(position.getRow(),6).getPiece()==null) {
+                // Arrocco corto: re da colonna 4 a colonna 6.
+                moves.add(new Move(position, new Position(position.getRow(),6)));
+            }
+            // Queenside
+            Piece qr = board.getTile(position.getRow(), 0).getPiece();
+            if (qr!=null&&qr.getType()==PieceType.ROOK&&qr.getColor()==color&&!qr.hasMoved()&&
+                board.getTile(position.getRow(),1).getPiece()==null&&
+                board.getTile(position.getRow(),2).getPiece()==null&&
+                board.getTile(position.getRow(),3).getPiece()==null) {
+                // Arrocco lungo: re da colonna 4 a colonna 2.
+                moves.add(new Move(position, new Position(position.getRow(),2)));
+            }
+        }
+
+        // Nota: qui si controlla solo la geometria dell'arrocco.
+        // Il controllo "non passo in scacco" viene validato a livello regole.
+        return moves;
+    }
+}

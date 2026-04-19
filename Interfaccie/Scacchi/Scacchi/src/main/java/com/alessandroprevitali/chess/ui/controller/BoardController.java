@@ -1,5 +1,6 @@
 package main.java.com.alessandroprevitali.chess.ui.controller;
 
 public class BoardController {
-    // puoi usarlo dopo per binding FXML avanzato
+	// Placeholder controller for BoardView.fxml.
+	// UI logic is currently managed directly in Java classes.
 }

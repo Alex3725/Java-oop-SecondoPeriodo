@@ -1,2 +1,3 @@
+<?import javafx.scene.layout.GridPane?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.alessandroprevitali.chess.ui.controller.BoardController"/>
+          fx:controller="main.java.com.alessandroprevitali.chess.ui.controller.BoardController"/>

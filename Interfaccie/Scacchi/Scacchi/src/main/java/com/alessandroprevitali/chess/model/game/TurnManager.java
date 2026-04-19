@@ -11,4 +11,8 @@ public class TurnManager {
     public void switchTurn() {
         whiteTurn = !whiteTurn;
     }
+
+    public void reset() {
+        whiteTurn = true;
+    }
 }

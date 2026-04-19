@@ -1,0 +1,33 @@
+package main.java.com.alessandroprevitali.chess.model.piece.impl;
+import main.java.com.alessandroprevitali.chess.model.board.Board;
+import main.java.com.alessandroprevitali.chess.model.board.Position;
+import main.java.com.alessandroprevitali.chess.model.move.Move;
+import main.java.com.alessandroprevitali.chess.model.piece.Color;
+import main.java.com.alessandroprevitali.chess.model.piece.Piece;
+import main.java.com.alessandroprevitali.chess.model.piece.PieceType;
+import java.util.ArrayList;
+import java.util.List;
+public class Knight extends Piece {
+    public Knight(Color color, Position position) { super(color, position); }
+    @Override public PieceType getType() { return PieceType.KNIGHT; }
+    @Override public List<Move> getPseudoLegalMoves(Board board) {
+        // Il cavallo si muove a L: 2 caselle su un asse e 1 sull'altro.
+        List<Move> moves = new ArrayList<>();
+
+        // Tutti gli 8 salti possibili del cavallo.
+        int[][] jumps = {{-2,-1},{-2,1},{-1,-2},{-1,2},{1,-2},{1,2},{2,-1},{2,1}};
+        for (int[] j : jumps) {
+            int r = position.getRow()+j[0], c = position.getCol()+j[1];
+            if (r>=0&&r<8&&c>=0&&c<8) {
+                Piece t = board.getTile(r,c).getPiece();
+                // Il cavallo puo atterrare su casella vuota o occupata da avversario.
+                // Non puo atterrare su un pezzo alleato.
+                if (t==null||t.getColor()!=color) moves.add(new Move(position, new Position(r,c)));
+            }
+        }
+
+        // Nota: il cavallo ignora i pezzi intermedi ("salta"),
+        // quindi non serve alcuna verifica di percorso libero.
+        return moves;
+    }
+}
