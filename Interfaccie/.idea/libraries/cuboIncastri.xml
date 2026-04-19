@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="cuboIncastri">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Fifo-Lifo/cuboIncastri.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

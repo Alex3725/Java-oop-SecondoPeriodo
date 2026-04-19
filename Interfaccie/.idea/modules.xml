@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DamaJava/DamaJava.iml" filepath="$PROJECT_DIR$/DamaJava/DamaJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Interfaccie.iml" filepath="$PROJECT_DIR$/.idea/Interfaccie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MezzoTrasporto/MezzoTrasporto.iml" filepath="$PROJECT_DIR$/MezzoTrasporto/MezzoTrasporto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Prova01/Prova01.iml" filepath="$PROJECT_DIR$/Prova01/Prova01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Fifo-Lifo/RistorantePila/RistorantePila.iml" filepath="$PROJECT_DIR$/Fifo-Lifo/RistorantePila/RistorantePila.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Fifo-Lifo/cuboIncastri/cuboIncastri.iml" filepath="$PROJECT_DIR$/Fifo-Lifo/cuboIncastri/cuboIncastri.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Fifo-Lifo/ticketingSystem/ticketingSystem.iml" filepath="$PROJECT_DIR$/Fifo-Lifo/ticketingSystem/ticketingSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Fifo-Lifo/torreHanoi/torreHanoi.iml" filepath="$PROJECT_DIR$/Fifo-Lifo/torreHanoi/torreHanoi.iml" />
+    </modules>
+  </component>
+</project>
