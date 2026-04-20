@@ -11,6 +11,14 @@ public class RuleEngine {
         // Utility class: no instances needed.
     }
 
+    /**
+     * Valuta lo stato della partita per il colore di turno combinando scacco e disponibilità di mosse.
+     *
+     * @param turn colore del giocatore da valutare
+     * @param board board corrente
+     * @param ms service per il calcolo delle mosse legali
+     * @return stato risultante tra ONGOING, CHECK, CHECKMATE e STALEMATE
+     */
     public static GameState evaluate(Color turn, Board board, MoveService ms) {
         boolean inCheck = CheckDetector.isInCheck(turn, board);
         boolean hasLegalMoves = ms.hasAnyLegalMoves(turn, board);

@@ -9,27 +9,54 @@ import java.util.ArrayList;
 import java.util.List;
 public class Rook extends Piece {
 
+    // Direzioni ortogonali: destra, sinistra, basso, alto.
+    private static final int[][] LINE_DIRECTIONS = {
+        {0, 1},
+        {0, -1},
+        {1, 0},
+        {-1, 0}
+    };
+
     public Rook(Color color, Position position) {
         super(color, position);
     }
 
+    /**
+     * Restituisce il tipo del pezzo.
+     *
+     * @return PieceType.ROOK
+     */
     @Override
     public PieceType getType() {
         return PieceType.ROOK;
     }
 
+    /**
+     * Calcola le pseudo-mosse della torre in tutte le direzioni ortogonali.
+     *
+     * @param board board corrente
+     * @return lista di pseudo-mosse geometricamente valide
+     */
     @Override
     public List<Move> getPseudoLegalMoves(Board board) {
         List<Move> moves = new ArrayList<>();
 
-        addLineMoves(board, moves, 0, 1);
-        addLineMoves(board, moves, 0, -1);
-        addLineMoves(board, moves, 1, 0);
-        addLineMoves(board, moves, -1, 0);
+        // La torre può muoversi in tutte le direzioni ortogonali.
+        for (int[] direction : LINE_DIRECTIONS) {
+            addLineMoves(board, moves, direction[0], direction[1]);
+        }
 
         return moves;
     }
 
+    /**
+     * Aggiunge tutte le mosse lineari della torre in una direzione finché non incontra un ostacolo.
+     *
+     * @param board board corrente
+     * @param moves collezione da arricchire con le mosse trovate
+     * @param rowStep incremento di riga per la direzione
+     * @param colStep incremento di colonna per la direzione
+     */
     private void addLineMoves(Board board, List<Move> moves, int rowStep, int colStep) {
         int row = position.getRow() + rowStep;
         int col = position.getCol() + colStep;
@@ -51,6 +78,13 @@ public class Rook extends Piece {
         }
     }
 
+    /**
+     * Verifica se una coordinata appartiene ai limiti della board.
+     *
+     * @param row riga da verificare
+     * @param col colonna da verificare
+     * @return true se la coordinata è dentro 0..7, false altrimenti
+     */
     private boolean isInsideBoard(int row, int col) {
         return row >= 0 && row < 8 && col >= 0 && col < 8;
     }

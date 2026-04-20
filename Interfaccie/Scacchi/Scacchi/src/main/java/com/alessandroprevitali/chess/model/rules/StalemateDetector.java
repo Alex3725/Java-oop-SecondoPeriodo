@@ -10,6 +10,14 @@ public class StalemateDetector {
         // Utility class: no instances needed.
     }
 
+    /**
+     * Verifica se il colore indicato è in condizione di stallo.
+     *
+     * @param color colore del giocatore da analizzare
+     * @param board board corrente
+     * @param ms service per il calcolo delle mosse legali
+     * @return true se non è in scacco e non ha mosse legali, false altrimenti
+     */
     public static boolean isStalemate(Color color, Board board, MoveService ms) {
         boolean isInCheck = CheckDetector.isInCheck(color, board);
         boolean hasLegalMoves = ms.hasAnyLegalMoves(color, board);

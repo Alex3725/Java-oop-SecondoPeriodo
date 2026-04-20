@@ -23,22 +23,33 @@ public class MainApp extends Application {
     private Text statusText;
     private Text subText;
 
+    /**
+     * Avvia l'applicazione JavaFX.
+     *
+     * @param args argomenti da linea di comando
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Crea la finestra principale, collega UI e service e mostra la scena iniziale.
+     *
+     * @param stage stage JavaFX principale
+     */
     @Override
     public void start(Stage stage) {
+        // Il service contiene tutta la logica della partita.
         gameService = new GameService();
 
-        // Layout principale — sfondo legno scuro
+        // Layout principale con stile scuro ispirato a una scacchiera classica.
         BorderPane root = new BorderPane();
         root.setStyle(
             "-fx-background-color: linear-gradient(to bottom right, #1C1008, #2E1A0A);"
         );
         root.setPadding(new Insets(28));
 
-        // === HEADER ===
+        // Header con titolo e pulsante di reset.
         HBox header = new HBox(14);
         header.setAlignment(Pos.CENTER_LEFT);
         header.setPadding(new Insets(0, 0, 18, 8));
@@ -90,7 +101,7 @@ public class MainApp extends Application {
 
         header.getChildren().addAll(logo, title, spacer, newGameBtn);
 
-        // === STATUS PANEL ===
+        // Pannello di stato: turno corrente, scacco, matto e stallo.
         VBox statusBox = new VBox(4);
         statusBox.setAlignment(Pos.CENTER);
         statusBox.setPadding(new Insets(14, 0, 14, 0));
@@ -105,19 +116,19 @@ public class MainApp extends Application {
 
         statusBox.getChildren().addAll(statusText, subText);
 
-        // === BOARD CON OMBRA ===
+        // Componente della board con ombra per dare profondità.
         boardView = new ChessBoardView(gameService, this::onMove);
         DropShadow shadow = new DropShadow(28, Color.web("#000000", 0.7));
         boardView.setEffect(shadow);
 
-        // === CENTRO ===
+        // Centro della finestra: stato sopra e board sotto.
         VBox center = new VBox(0, statusBox, boardView);
         center.setAlignment(Pos.CENTER);
 
         root.setTop(header);
         root.setCenter(center);
 
-        // Footer
+        // Suggerimento rapido per l'utente.
         Text footer = new Text("Clicca un pezzo per selezionarlo, poi clicca la destinazione  •  Promozione automatica a Regina");
         footer.setFont(Font.font("Georgia", FontWeight.NORMAL, 10));
         footer.setFill(Color.web("#6B5040"));
@@ -136,14 +147,21 @@ public class MainApp extends Application {
         updateStatus();
     }
 
+    /**
+     * Callback eseguito dopo una mossa valida per aggiornare lo stato visivo del turno.
+     */
     private void onMove() {
+        // Aggiorna il testo di stato e aggiunge un piccolo fade al cambio turno.
         updateStatus();
-        // Animazione fade su cambio turno
         FadeTransition ft = new FadeTransition(Duration.millis(180), statusText);
         ft.setFromValue(0.3); ft.setToValue(1.0); ft.play();
     }
 
+    /**
+     * Aggiorna testi e colori del pannello stato in base al GameState corrente.
+     */
     private void updateStatus() {
+        // Il testo dipende dallo stato globale della partita.
         GameState state = gameService.getGame().getState();
         boolean whiteTurn = gameService.getGame().getTurnManager().isWhiteTurn();
 
@@ -175,7 +193,11 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Ripristina una nuova partita e aggiorna interfaccia e animazioni di reset.
+     */
     private void resetGame() {
+        // Reset completo della partita e della UI.
         gameService.reset();
         boardView.resetSelection();
         boardView.refresh();

@@ -10,6 +10,14 @@ public class CheckmateDetector {
         // Utility class: no instances needed.
     }
 
+    /**
+     * Verifica se il colore indicato è in condizione di scacco matto.
+     *
+     * @param color colore del giocatore da analizzare
+     * @param board board corrente
+     * @param ms service per il calcolo delle mosse legali
+     * @return true se il re è sotto scacco e non esistono mosse legali, false altrimenti
+     */
     public static boolean isCheckmate(Color color, Board board, MoveService ms) {
         boolean isInCheck = CheckDetector.isInCheck(color, board);
         boolean hasLegalMoves = ms.hasAnyLegalMoves(color, board);

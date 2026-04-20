@@ -12,11 +12,22 @@ public class Pawn extends Piece {
         super(color, position);
     }
 
+    /**
+     * Restituisce il tipo del pezzo.
+     *
+     * @return PieceType.PAWN
+     */
     @Override
     public PieceType getType() {
         return PieceType.PAWN;
     }
 
+    /**
+     * Calcola le pseudo-mosse del pedone (avanzamenti e catture diagonali).
+     *
+     * @param board board corrente
+     * @return lista di pseudo-mosse geometricamente valide
+     */
     @Override
     public List<Move> getPseudoLegalMoves(Board board) {
         List<Move> moves = new ArrayList<>();
@@ -30,6 +41,14 @@ public class Pawn extends Piece {
         return moves;
     }
 
+    /**
+     * Aggiunge avanzamento semplice e doppio passo iniziale del pedone.
+     *
+     * @param board board corrente
+     * @param moves collezione da arricchire con le mosse trovate
+     * @param direction direzione di avanzamento (-1 bianco, +1 nero)
+     * @param startRow riga iniziale da cui è ammesso il doppio passo
+     */
     private void addForwardMoves(Board board, List<Move> moves, int direction, int startRow) {
         int row = position.getRow();
         int col = position.getCol();
@@ -52,6 +71,13 @@ public class Pawn extends Piece {
         }
     }
 
+    /**
+     * Aggiunge eventuali catture diagonali del pedone.
+     *
+     * @param board board corrente
+     * @param moves collezione da arricchire con le mosse trovate
+     * @param direction direzione di avanzamento del pedone
+     */
     private void addDiagonalCaptures(Board board, List<Move> moves, int direction) {
         int row = position.getRow();
         int col = position.getCol();
@@ -72,6 +98,13 @@ public class Pawn extends Piece {
         }
     }
 
+    /**
+     * Verifica se una coordinata appartiene ai limiti della board.
+     *
+     * @param row riga da verificare
+     * @param col colonna da verificare
+     * @return true se la coordinata è dentro 0..7, false altrimenti
+     */
     private boolean isInsideBoard(int row, int col) {
         return row >= 0 && row < 8 && col >= 0 && col < 8;
     }

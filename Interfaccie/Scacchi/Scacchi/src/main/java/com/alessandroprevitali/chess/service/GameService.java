@@ -20,46 +20,69 @@ public class GameService {
     private MoveService moveService;
 
     public GameService() {
+        // Il service coordina un'istanza di partita e la logica di validazione delle mosse.
         this.game = new Game();
         this.moveService = new MoveService();
     }
 
+    /**
+     * Espone l'istanza corrente di partita usata dal service.
+     *
+     * @return oggetto Game attualmente gestito
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Tenta di applicare una mossa completa: validazione, esecuzione, cambio turno e aggiornamento stato.
+     *
+     * @param move mossa richiesta dalla UI
+     * @return true se la mossa è valida ed eseguita, false in caso contrario
+     */
     public boolean handleMove(Move move) {
+        // Blocca mosse quando la partita è già terminata.
         if (game.getState() == GameState.CHECKMATE || game.getState() == GameState.STALEMATE) {
             return false;
         }
 
+        // La validazione completa è demandata a MoveService.
         if (!moveService.isValid(move, game)) {
             return false;
         }
 
+        // Applica la mossa, cambia il turno e aggiorna il risultato della partita.
         applyMove(move);
         game.getTurnManager().switchTurn();
         updateGameState();
         return true;
     }
 
+    /**
+     * Applica fisicamente una mossa sulla board, includendo arrocco e promozione pedone.
+     *
+     * @param move mossa già validata da eseguire
+     */
     private void applyMove(Move move) {
+        // Spostamento fisico dei pezzi sulla board.
         Board board = game.getBoard();
         Tile from = board.getTile(move.getFrom().getRow(), move.getFrom().getCol());
         Tile to = board.getTile(move.getTo().getRow(), move.getTo().getCol());
         Piece piece = from.getPiece();
 
-        // Arrocco
+        // Riconoscimento dell'arrocco in base allo spostamento orizzontale del re.
         boolean isCastleKingside = piece.getType() == PieceType.KING
             && move.getTo().getCol() - move.getFrom().getCol() == 2;
         boolean isCastleQueenside = piece.getType() == PieceType.KING
             && move.getFrom().getCol() - move.getTo().getCol() == 2;
 
+        // Aggiorno il pezzo principale.
         from.setPiece(null);
         to.setPiece(piece);
         piece.setPosition(move.getTo());
         piece.setHasMoved(true);
 
+        // Se c'è arrocco, sposto anche la torre.
         if (isCastleKingside) {
             Tile rFrom = board.getTile(move.getFrom().getRow(), 7);
             Tile rTo = board.getTile(move.getFrom().getRow(), 5);
@@ -86,7 +109,7 @@ public class GameService {
             }
         }
 
-        // Promozione pedone → Regina automatica
+        // Promozione automatica del pedone arrivato in ultima traversa.
         if (piece.getType() == PieceType.PAWN) {
             int promotionRow = (piece.getColor() == Color.WHITE) ? 0 : 7;
             if (move.getTo().getRow() == promotionRow) {
@@ -95,7 +118,11 @@ public class GameService {
         }
     }
 
+    /**
+     * Ricalcola lo stato globale della partita per il giocatore che deve muovere.
+     */
     private void updateGameState() {
+        // Dopo ogni mossa controllo se il giocatore avversario è sotto scacco e ha mosse disponibili.
         Color opponent = game.getTurnManager().isWhiteTurn() ? Color.WHITE : Color.BLACK;
         Board board = game.getBoard();
         boolean inCheck = CheckDetector.isInCheck(opponent, board);
@@ -107,15 +134,32 @@ public class GameService {
         }
     }
 
+    /**
+     * Restituisce le mosse legali del pezzo richiesto nello stato corrente.
+     *
+     * @param piece pezzo selezionato
+     * @return lista di mosse legali per il pezzo
+     */
     public List<Move> getLegalMoves(Piece piece) {
+        // La UI usa questo metodo per evidenziare le caselle raggiungibili dal pezzo selezionato.
         return moveService.getLegalMoves(piece, game.getBoard());
     }
 
+    /**
+     * Ripristina una nuova partita con board e turno iniziali.
+     */
     public void reset() {
+        // Reset completo della partita.
         game.reset();
     }
 
+    /**
+     * Indica se la partita è terminata.
+     *
+     * @return true se lo stato è CHECKMATE o STALEMATE, false altrimenti
+     */
     public boolean isGameOver() {
+        // La UI usa questo check per bloccare input dopo la fine della partita.
         GameState s = game.getState();
         return s == GameState.CHECKMATE || s == GameState.STALEMATE;
     }
