@@ -13,6 +13,8 @@ Copia i file nella tua cartella `src/` esistente, sovrascrivendo i file stub.
 
 ## VM Options (Run Configuration)
 Aggiungi nei VM options della configurazione di run:
+
+In caso non si trova i VM andare in more Options alto a destra e spuntare VM poi incollare il comando con rotta esaatta
 ```
 --module-path /PATH/TO/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml
 ```
